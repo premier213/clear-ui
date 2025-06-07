@@ -97,10 +97,11 @@ export function Button({
           {leftSection && (
             <span
               className={cn({
-                "pr-6xs": size === "xs" || size === "sm",
-                "pr-5xs": size === "md",
-                "pr-4xs": size === "lg",
-                "pr-3xs": size === "xl",
+                "pr-1": size === "xs",
+                "pr-2": size === "sm",
+                "pr-3": size === "md",
+                "pr-4": size === "lg",
+                "pr-5": size === "xl",
               })}
             >
               {leftSection}
@@ -110,10 +111,11 @@ export function Button({
           {rightSection && (
             <span
               className={cn({
-                "pl-6xs": size === "xs" || size === "sm",
-                "pl-5xs": size === "md",
-                "pl-4xs": size === "lg",
-                "pl-3xs": size === "xl",
+                "pl-1": size === "xs",
+                "pl-2": size === "sm",
+                "pl-3": size === "md",
+                "pl-4": size === "lg",
+                "pl-5": size === "xl",
               })}
             >
               {rightSection}

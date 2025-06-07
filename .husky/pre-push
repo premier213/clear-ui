@@ -1,0 +1,24 @@
+echo "Running pre-commit checks..."
+
+# Format code first
+echo "Formatting code with Biome..."
+bun run format
+
+# Re-stage changes in case formatting updated files
+git add .
+
+# Lint without fixing
+echo "Running lint checks..."
+bun run lint || {
+  echo "❌ Linting failed. Please fix the issues before committing."
+  exit 1
+}
+
+# Type checking
+echo "Running TypeScript checks..."
+bun run tsc || {
+  echo "❌ TypeScript type checking failed. Please fix the issues before committing."
+  exit 1
+}
+
+echo "✅ All checks passed!"

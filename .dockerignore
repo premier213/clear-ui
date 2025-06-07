@@ -1,0 +1,5 @@
+node_modules/
+.vscode/
+.idea/
+.husky/
+commitlint.config.js

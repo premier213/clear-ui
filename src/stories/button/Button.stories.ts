@@ -1,30 +1,43 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { fn } from 'storybook/test';
+import { fn } from "storybook/test";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import React from "react";
 
 const meta = {
-  title: 'UI/Button',
+  title: "UI/Button",
   component: Button,
   parameters: {
-      layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     variant: {
-      control: 'select',
-      options: ['primary', 'secondary', 'ghost', 'tertiary', 'text', 'destructive', 'destructive-ghost', 'destructive-tertiary', 'destructive-text', 'destructive-secondary'],
+      control: "select",
+      options: [
+        "primary",
+        "secondary",
+        "ghost",
+        "tertiary",
+        "text",
+        "destructive",
+        "destructive-ghost",
+        "destructive-tertiary",
+        "destructive-text",
+        "destructive-secondary",
+      ],
     },
     size: {
-      control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      control: "select",
+      options: ["xs", "sm", "md", "lg", "xl"],
     },
     isLoading: {
-      control: 'boolean',
+      control: "boolean",
     },
     block: {
-      control: 'boolean',
+      control: "boolean",
     },
   },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
@@ -37,46 +50,55 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
   args: {
-    variant: 'primary',
-    children: 'Button',
+    variant: "primary",
+    children: "تست دکمه",
+    size: "xs",
   },
 };
 
 export const Secondary: Story = {
   args: {
-    variant: 'secondary',
-    children: 'Button',
+    variant: "secondary",
+    children: "تست دکمه",
   },
 };
 
 export const Ghost: Story = {
   args: {
-    variant: 'ghost',
-    children: 'Button',
+    variant: "ghost",
+    children: "تست دکمه",
   },
 };
 
 export const Loading: Story = {
   args: {
-    variant: 'primary',
+    variant: "primary",
     isLoading: true,
-    children: 'Loading',
+    children: "تست دکمه",
   },
 };
 
 export const WithIcons: Story = {
   args: {
-    variant: 'primary',
-    leftSection: '←',
-    rightSection: '→',
-    children: 'With Icons',
+    variant: "primary",
+
+    leftSection: React.createElement(ArrowLeft, {
+      size: 20,
+    }),
+
+    rightSection: React.createElement(ArrowRight, {
+      size: 20,
+    }),
+
+    children: "تست دکمه",
+    size: "xl"
   },
 };
 
 export const Block: Story = {
   args: {
-    variant: 'primary',
+    variant: "primary",
     block: true,
-    children: 'Block Button',
+    children: "دکمه",
   },
 };
