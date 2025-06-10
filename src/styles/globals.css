@@ -115,10 +115,10 @@
 @keyframes ripple {
   0% {
     transform: scale(0);
-    opacity: 1;
+    opacity: 0.5;
   }
   100% {
-    transform: scale(4);
+    transform: scale(2);
     opacity: 0;
   }
 }
@@ -134,8 +134,10 @@
     font-family: var(--font-vazirmatn);
   }
 }
-@layer components {
+
+@layer utilities {
   .animate-ripple {
-    animation: var(--animate-ripple);
+    animation: ripple 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
   }
 }
