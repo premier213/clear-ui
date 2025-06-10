@@ -32,6 +32,11 @@ const meta: Meta<typeof Button> = {
 			control: "boolean",
 			description: "Whether the button is disabled",
 		},
+		ripple: {
+			control: "boolean",
+			description: "Whether to show the ripple effect on click",
+			defaultValue: true,
+		},
 		className: {
 			control: "text",
 			description: "Additional CSS classes to apply to the button",
@@ -149,4 +154,11 @@ export const BlockWithIcon: Story = {
 			Full Width Search Button
 		</Button>
 	),
+};
+
+export const WithoutRipple: Story = {
+	args: {
+		ripple: false,
+		children: "No Ripple Effect",
+	},
 };

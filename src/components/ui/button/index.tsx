@@ -42,6 +42,7 @@ const buttonVariants = cva(
 type ButtonProps = React.ComponentProps<"button"> &
 	VariantProps<typeof buttonVariants> & {
 		asChild?: boolean;
+		ripple?: boolean;
 	};
 
 function Button({
@@ -50,6 +51,7 @@ function Button({
 	size,
 	block,
 	asChild = false,
+	ripple = true,
 	onClick,
 	...props
 }: ButtonProps) {
@@ -58,7 +60,7 @@ function Button({
 	const handleClick = useCallback(
 		(e: React.MouseEvent<HTMLButtonElement>) => {
 			onClick?.(e);
-			if (!asChild) {
+			if (!asChild && ripple) {
 				const button = e.currentTarget;
 				const rect = button.getBoundingClientRect();
 				const x = e.clientX - rect.left;
@@ -80,7 +82,7 @@ function Button({
 				});
 			}
 		},
-		[asChild, onClick],
+		[asChild, onClick, ripple],
 	);
 
 	return (
