@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { useRef } from "react";
 import { Button } from "./index";
 
 const meta: Meta<typeof Button> = {
@@ -179,4 +180,45 @@ export const WithoutRipple: Story = {
 		ripple: false,
 		children: "No Ripple Effect",
 	},
+};
+
+export const AsLink: Story = {
+	render: (args) => {
+		const linkRef = useRef<HTMLAnchorElement>(null);
+
+		return (
+			<div className="flex flex-col gap-4">
+				<Button
+					{...args}
+					asChild
+					onClick={() => {
+						// Example of using the ref
+						linkRef.current?.focus();
+					}}
+				>
+					<a
+						ref={linkRef}
+						href="https://example.com"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Visit Example.com
+					</a>
+				</Button>
+				<Button {...args} asChild variant="secondary">
+					<a href="#section">Scroll to Section</a>
+				</Button>
+			</div>
+		);
+	},
+};
+
+export const SingleLink: Story = {
+	render: (args) => (
+		<Button {...args} asChild>
+			<a href="https://example.com" target="_blank" rel="noopener noreferrer">
+				Visit Example.com
+			</a>
+		</Button>
+	),
 };

@@ -1,6 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { type VariantProps, cva } from "class-variance-authority";
-import { useCallback } from "react";
+import { forwardRef, useCallback } from "react";
 
 import { cn } from "@/lib/utils";
 import { Spinner } from "../loader/spinner";
@@ -47,84 +47,107 @@ type ButtonProps = React.ComponentProps<"button"> &
 		loading?: boolean;
 	};
 
-function Button({
-	className,
-	variant,
-	size,
-	block,
-	asChild = false,
-	ripple = true,
-	onClick,
-	children,
-	disabled,
-	loading = false,
-	...props
-}: ButtonProps) {
-	const Comp = asChild ? Slot : "button";
-
-	const handleClick = useCallback(
-		(e: React.MouseEvent<HTMLButtonElement>) => {
-			onClick?.(e);
-			if (!asChild && ripple) {
-				const button = e.currentTarget;
-				const rect = button.getBoundingClientRect();
-				const x = e.clientX - rect.left;
-				const y = e.clientY - rect.top;
-
-				const ripple = document.createElement("span");
-				ripple.className =
-					"absolute block rounded-full bg-white/20 animate-ripple";
-				ripple.style.left = `${x}px`;
-				ripple.style.top = `${y}px`;
-				ripple.style.width = "100px";
-				ripple.style.height = "100px";
-				ripple.style.marginLeft = "-50px";
-				ripple.style.marginTop = "-50px";
-				button.appendChild(ripple);
-
-				ripple.addEventListener("animationend", () => {
-					ripple.remove();
-				});
-			}
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+	(
+		{
+			className,
+			variant,
+			size,
+			block,
+			asChild = false,
+			ripple = true,
+			onClick,
+			children,
+			disabled,
+			loading = false,
+			...props
 		},
-		[asChild, onClick, ripple],
-	);
+		ref,
+	) => {
+		const Comp = asChild ? Slot : "button";
 
-	return (
-		<Comp
-			data-slot="button"
-			className={cn(
-				buttonVariants({ variant, size, block, className }),
-				"relative flex items-center justify-center",
-			)}
-			onClick={loading ? undefined : handleClick}
-			disabled={disabled}
-			{...props}
-		>
-			<div
+		const handleClick = useCallback(
+			(e: React.MouseEvent<HTMLButtonElement>) => {
+				onClick?.(e);
+				if (!asChild && ripple) {
+					const button = e.currentTarget;
+					const rect = button.getBoundingClientRect();
+					const x = e.clientX - rect.left;
+					const y = e.clientY - rect.top;
+
+					const ripple = document.createElement("span");
+					ripple.className =
+						"absolute block rounded-full bg-white/20 animate-ripple";
+					ripple.style.left = `${x}px`;
+					ripple.style.top = `${y}px`;
+					ripple.style.width = "100px";
+					ripple.style.height = "100px";
+					ripple.style.marginLeft = "-50px";
+					ripple.style.marginTop = "-50px";
+					button.appendChild(ripple);
+
+					ripple.addEventListener("animationend", () => {
+						ripple.remove();
+					});
+				}
+			},
+			[asChild, onClick, ripple],
+		);
+
+		if (asChild) {
+			return (
+				<Comp
+					ref={ref}
+					className={cn(
+						buttonVariants({ variant, size, block, className }),
+						"relative flex items-center justify-center",
+					)}
+					{...props}
+				>
+					{children}
+				</Comp>
+			);
+		}
+
+		return (
+			<Comp
+				ref={ref}
+				data-slot="button"
 				className={cn(
-					"flex w-full transform items-center justify-center transition-all duration-300",
-					loading
-						? "-translate-y-2 invisible opacity-0"
-						: "visible translate-y-0 opacity-100",
+					buttonVariants({ variant, size, block, className }),
+					"relative flex items-center justify-center",
 				)}
-				aria-hidden={loading}
+				onClick={loading ? undefined : handleClick}
+				disabled={disabled}
+				{...props}
 			>
-				{children}
-			</div>
-			<div
-				className={cn(
-					"absolute inset-0 flex items-center justify-center transition-all duration-300",
-					loading
-						? "visible translate-y-0 opacity-100"
-						: "invisible translate-y-2 opacity-0",
-				)}
-				aria-hidden={!loading}
-			>
-				<Spinner className="size-4" />
-			</div>
-		</Comp>
-	);
-}
+				<div
+					className={cn(
+						"flex w-full transform items-center justify-center transition-all duration-300",
+						loading
+							? "-translate-y-2 invisible opacity-0"
+							: "visible translate-y-0 opacity-100",
+					)}
+					aria-hidden={loading}
+				>
+					{children}
+				</div>
+				<div
+					className={cn(
+						"absolute inset-0 flex items-center justify-center transition-all duration-300",
+						loading
+							? "visible translate-y-0 opacity-100"
+							: "invisible translate-y-2 opacity-0",
+					)}
+					aria-hidden={!loading}
+				>
+					<Spinner className="size-4" />
+				</div>
+			</Comp>
+		);
+	},
+);
+
+Button.displayName = "Button";
 
 export { Button, buttonVariants };
