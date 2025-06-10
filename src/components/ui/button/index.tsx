@@ -3,6 +3,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 import { useCallback } from "react";
 
 import { cn } from "@/lib/utils";
+import { Spinner } from "../loader/spinner";
 
 const buttonVariants = cva(
 	"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive relative overflow-hidden",
@@ -43,6 +44,7 @@ type ButtonProps = React.ComponentProps<"button"> &
 	VariantProps<typeof buttonVariants> & {
 		asChild?: boolean;
 		ripple?: boolean;
+		loading?: boolean;
 	};
 
 function Button({
@@ -53,6 +55,9 @@ function Button({
 	asChild = false,
 	ripple = true,
 	onClick,
+	children,
+	disabled,
+	loading = false,
 	...props
 }: ButtonProps) {
 	const Comp = asChild ? Slot : "button";
@@ -88,11 +93,36 @@ function Button({
 	return (
 		<Comp
 			data-slot="button"
-			className={cn(buttonVariants({ variant, size, block, className }))}
-			onClick={handleClick}
+			className={cn(
+				buttonVariants({ variant, size, block, className }),
+				"relative flex items-center justify-center",
+			)}
+			onClick={loading ? undefined : handleClick}
+			disabled={disabled}
 			{...props}
 		>
-			{props.children}
+			<div
+				className={cn(
+					"flex w-full transform items-center justify-center transition-all duration-300",
+					loading
+						? "-translate-y-2 invisible opacity-0"
+						: "visible translate-y-0 opacity-100",
+				)}
+				aria-hidden={loading}
+			>
+				{children}
+			</div>
+			<div
+				className={cn(
+					"absolute inset-0 flex items-center justify-center transition-all duration-300",
+					loading
+						? "visible translate-y-0 opacity-100"
+						: "invisible translate-y-2 opacity-0",
+				)}
+				aria-hidden={!loading}
+			>
+				<Spinner className="size-4" />
+			</div>
 		</Comp>
 	);
 }

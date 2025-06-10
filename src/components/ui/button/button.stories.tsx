@@ -37,6 +37,11 @@ const meta: Meta<typeof Button> = {
 			description: "Whether to show the ripple effect on click",
 			defaultValue: true,
 		},
+		loading: {
+			control: "boolean",
+			description: "Whether to show the loading spinner",
+			defaultValue: false,
+		},
 		className: {
 			control: "text",
 			description: "Additional CSS classes to apply to the button",
@@ -127,9 +132,22 @@ export const WithIcon: Story = {
 
 export const Loading: Story = {
 	args: {
-		disabled: true,
-		children: "Loading...",
+		loading: true,
+		children: "Loading",
 	},
+};
+
+export const LoadingWithIcon: Story = {
+	args: {
+		loading: true,
+		children: "Loading",
+	},
+	render: (args) => (
+		<Button {...args}>
+			<span className="mr-2">🔍</span>
+			Search
+		</Button>
+	),
 };
 
 export const Block: Story = {

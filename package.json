@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build",
     "lint": "biome check --no-errors-on-unmatched --files-ignore-unknown=true",
     "format": "biome check --no-errors-on-unmatched --files-ignore-unknown=true --fix",
